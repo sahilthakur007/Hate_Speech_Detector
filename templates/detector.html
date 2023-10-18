@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Marathi Hate Speech Detector</title>
+</head>
+
+<body>
+    <div class="container mt-5 p-3">
+        <h2>Marathi Hate Speech Detector</h2>
+        <form method="POST" action="/detect">
+            <div class="form-floating mb-3 mt-3">
+                <textarea class="form-control" id="floatingTextarea" style="resize: none; height: 100px;" name="text"></textarea>
+                <label for="floatingTextarea">Enter text here</label>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Detect</button>
+            {% if result %}
+            <h1>{{result}}</h1>
+            {% endif %}
+        </form>
+    </div>
+</body>
+
+</html>
