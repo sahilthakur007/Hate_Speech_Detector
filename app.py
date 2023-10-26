@@ -6,7 +6,7 @@ import  fasttext
 import pickle
 from mahaNLP.preprocess import Preprocess
 from mahaNLP.tokenizer import Tokenize
-from pydub import AudioSegment 
+# from pydub import AudioSegment 
 from werkzeug.utils import secure_filename
 import os
 import speech_recognition as sr
@@ -63,17 +63,24 @@ def preprocessing(text):
 def hello_world():
     return render_template('home.html')
 
+@app.route("/text-detector")
+def getTextDetector():
+    return render_template("text_detector.html")
+
+@app.route("/audio-detect")
+def getAudioDetector():
+    return render_template("")
 @app.route('/detect',methods=["POST"])
 def get_text():
     if request.method == "POST":
        text = request.form.get("text")
     #    audio = request.files['audio']
-       audio = request.files.get('audio')
-       if audio:
-           print(audio)
-           print("hello")
-           audio.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(audio.filename))) # 
-           startConvertion("./static/"+audio.filename)
+    #    audio = request.files.get('audio')
+    #    if audio:
+    #        print(audio)
+    #        print("hello")
+    #        audio.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(audio.filename))) # 
+    #        startConvertion("./static/"+audio.filename)
 
          
            
@@ -92,9 +99,9 @@ def get_text():
            result = "No Hate"
        else:
            result = "Hate"
-       return render_template('detector.html',result=result,text=text)
+       return render_template('text_detector.html',result=result,text=text)
 
-    return render_template('detector.html')
+    return render_template('text_detector.html')
 
 if __name__ == '__main__':
     app.run()
