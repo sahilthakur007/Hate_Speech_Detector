@@ -33,3 +33,10 @@ body{
     border-color: gray; 
     resize: none;
 }
+/* rgba(249, 220, 72, 255) */
+.result-div{
+    background-color: rgba(25, 21, 74, 255);
+    width: 60vw;
+    border-radius: 10px;
+    transform: skewX(-10deg);
+}
