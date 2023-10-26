@@ -16,21 +16,19 @@
 <body>
     <div class="container mt-5 p-4 card shadow">
         <div  class = "text-center" style="width: 100%;">
-            <h3 class="fst-italic" >Try Our Marathi Hate Speech Detector By Entering Your Marathi Text</h3>
+            <h3 class="fst-italic" >Try Our Marathi Hate Speech Detector By Uploading Your Marathi Audio File</h3>
 
         </div>
-        <form method="POST" action="/detect-text" enctype="multipart/form-data">
+        <form method="POST" action="/detect-audio" enctype="multipart/form-data">
 
             <div class=" my-4">
                
-                    <label style="font-size: large; color: rgb(146, 146, 146);" >Enter text here</label>
-
-                <textarea  name="text" id="" rows="7" class="my-textarea">
-                    {% if text %}
-            {{text}}
-            {% endif %}
-                </textarea>
-
+                    <label for="formFile" class="form-label">Upload your audio file</label>
+                    <input class="form-control" name = "audio" type="file" id="formFile">
+                    
+                    <div class="form-text text-danger">
+                        (We support only .wav files.)
+                    </div>
               </div>
               
             <!-- <div class=" mb-3 mt-3">

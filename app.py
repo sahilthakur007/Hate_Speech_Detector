@@ -32,6 +32,7 @@ def startConvertion(path="",lang = 'mr-IN'):
             # #close file
             # text_file.close()
             print(text)
+            return text 
     
         except:
             print('Sorry.. run again...')
@@ -67,10 +68,11 @@ def hello_world():
 def getTextDetector():
     return render_template("text_detector.html")
 
-@app.route("/audio-detect")
+@app.route("/audio-detector")
 def getAudioDetector():
-    return render_template("")
-@app.route('/detect',methods=["POST"])
+    return render_template("audio_detector.html")
+
+@app.route('/detect-text',methods=["POST"])
 def get_text():
     if request.method == "POST":
        text = request.form.get("text")
@@ -99,9 +101,42 @@ def get_text():
            result = "No Hate"
        else:
            result = "Hate"
-       return render_template('text_detector.html',result=result,text=text)
+       return render_template('textdetector.html',result=result,text=text)
 
     return render_template('text_detector.html')
 
+
+
+@app.route('/detect-audio',methods=["POST"])
+def get_audio():
+    if request.method == "POST":
+       audio = request.files['audio']
+       audio = request.files.get('audio')
+       if audio:
+           print(audio)
+        #    print("hello")
+           audio.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(audio.filename))) # 
+           
+           text = startConvertion("./static/"+audio.filename)
+         
+           
+    #    audio.export("output.mp3", format="mp3")
+    #    print(audio)
+           processedText  = preprocessing(text)
+
+           model = fasttext.load_model('./models/fasttext.bin')
+           hatedetecter=pickle.load(open('./models/hate_detector.pkl','rb'))
+           output = hatedetecter.predict([model.get_sentence_vector
+           (processedText)])[0]
+    #    print(output)
+    #    print(text)
+           result = ""
+           if output==1:
+                result = "No Hate"
+           else:
+                result = "Hate"
+           return render_template('textdetector.html',result=result,text=text)
+
+    return render_template('text_detector.html')
 if __name__ == '__main__':
     app.run()
