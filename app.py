@@ -101,7 +101,7 @@ def get_text():
            result = "No Hate"
        else:
            result = "Hate"
-       return render_template('textdetector.html',result=result,text=text)
+       return render_template('text_detector.html',result=result,text=text)
 
     return render_template('text_detector.html')
 
@@ -135,8 +135,8 @@ def get_audio():
                 result = "No Hate"
            else:
                 result = "Hate"
-           return render_template('textdetector.html',result=result,text=text)
+           return render_template('audio_detector.html',result=result)
 
-    return render_template('text_detector.html')
+    return render_template('audio_detector.html')
 if __name__ == '__main__':
     app.run()
