@@ -6,8 +6,36 @@ import  fasttext
 import pickle
 from mahaNLP.preprocess import Preprocess
 from mahaNLP.tokenizer import Tokenize
+from pydub import AudioSegment 
+from werkzeug.utils import secure_filename
+import os
+import speech_recognition as sr
+r = sr.Recognizer()
 from flask import Flask,request, url_for, redirect, render_template
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'static'
+
+
+def startConvertion(path="",lang = 'mr-IN'):
+    with sr.AudioFile(path) as source:
+        print('Fetching File')
+        audio_text = r.listen(source)
+        # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
+        try:
+        
+            # using google speech recognition
+            print('Converting audio transcripts into text ...')
+            text = r.recognize_google(audio_text, language=lang)
+            # text_file = open("D:\Sem7\Mega Project\Output.txt", "a")
+            # #write string to file
+            # text_file.write(text)
+            # #close file
+            # text_file.close()
+            print(text)
+    
+        except:
+            print('Sorry.. run again...')
+
 
 def is_marathi_word(token):
     # A simple heuristic to check if a word is Marathi or not
@@ -33,26 +61,38 @@ def preprocessing(text):
     return " ".join(stopword_removed)
 @app.route('/')
 def hello_world():
-    return render_template('detector.html')
+    return render_template('home.html')
 
 @app.route('/detect',methods=["POST"])
 def get_text():
     if request.method == "POST":
        text = request.form.get("text")
+    #    audio = request.files['audio']
+       audio = request.files.get('audio')
+       if audio:
+           print(audio)
+           print("hello")
+           audio.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(audio.filename))) # 
+           startConvertion("./static/"+audio.filename)
+
+         
+           
+    #    audio.export("output.mp3", format="mp3")
+    #    print(audio)
        processedText  = preprocessing(text)
 
-       model = fasttext.load_model('fasttext.bin')
-       hatedetecter=pickle.load(open('hate_detector.pkl','rb'))
+       model = fasttext.load_model('./models/fasttext.bin')
+       hatedetecter=pickle.load(open('./models/hate_detector.pkl','rb'))
        output = hatedetecter.predict([model.get_sentence_vector
        (processedText)])[0]
-       print(output)
-       print(text)
+    #    print(output)
+    #    print(text)
        result = ""
        if output==1:
            result = "No Hate"
        else:
            result = "Hate"
-       return render_template('detector.html',result=result)
+       return render_template('detector.html',result=result,text=text)
 
     return render_template('detector.html')
 

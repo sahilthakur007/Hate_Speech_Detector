@@ -16,10 +16,20 @@
 <body>
     <div class="container mt-5 p-3">
         <h2>Marathi Hate Speech Detector</h2>
-        <form method="POST" action="/detect">
+        <form method="POST" action="/detect" enctype="multipart/form-data">
             <div class="form-floating mb-3 mt-3">
-                <textarea class="form-control" id="floatingTextarea" style="resize: none; height: 100px;" name="text"></textarea>
-                <label for="floatingTextarea">Enter text here</label>
+                <textarea placeholder="Enter text here" class="form-control" id="floatingTextarea"
+                    style="resize: none; height: 100px;" name="text">
+                {% if text %}
+                {{text}}
+                {% endif %}
+                </textarea>
+            </div>
+
+
+            <div class="form-floating mb-3 mt-3">
+                <input type="file" placeholder="Enter text here" class="form-control" name="audio">
+                </input>
             </div>
 
             <button type="submit" class="btn btn-warning">Detect</button>
