@@ -15,48 +15,58 @@
 
 <body>
     <div class="container mt-5 p-4 card shadow">
-        <div  class = "text-center" style="width: 100%;">
-            <h3 class="fst-italic" >Try Our Marathi Hate Speech Detector By Entering Your Marathi Text</h3>
+        <div class="text-center" style="width: 100%;">
+            <h3 class="fst-italic">Try Our Marathi Hate Speech Detector By Entering Your Marathi Text</h3>
 
         </div>
         <form method="POST" action="/detect-text" enctype="multipart/form-data">
 
             <div class=" my-4">
-               
-                    <label style="font-size: large; color: rgb(146, 146, 146);" >Enter text here</label>
 
-                <textarea  name="text" id="" rows="7" class="my-textarea">
+                <label style="font-size: large; color: rgb(146, 146, 146);">Enter text here</label>
+
+                <textarea name="text" id="" rows="7" class="my-textarea">
                     {% if text %}
             {{text}}
             {% endif %}
                 </textarea>
 
-              </div>
-              
+            </div>
+
             <!-- <div class=" mb-3 mt-3">
                 <input type="file" placeholder="Enter text here" class="form-control" name="audio">
                 </input>
             </div> -->
 
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn  px-4 text-white" style="background-color: rgba(25, 21, 74, 255)"> Detect</button>
+                <button type="submit" class="btn  px-4 text-white" style="background-color: rgba(25, 21, 74, 255)">
+                    Detect</button>
             </div>
-           
+
         </form>
 
 
-        
+
         <!-- <h1>{{result}}</h1> -->
 
 
     </div>
 
-    {% if result %}
+    {% if result == "No Hate": %}
     <div class="container result-div mt-5 text-white">
         <h4>Detected Result</h4>
         <div class="d-flex flex-column align-items-center">
             <h1 style="color: rgba(249, 220, 72, 255);">{{result}}</h1>
             <p>Your content does not contain any hateful speech. We recognized your language as non offensive.</p>
+        </div>
+    </div>
+    {% endif %}
+    {% if result == "Hate": %}
+    <div class="container result-div mt-5 text-white">
+        <h4>Detected Result</h4>
+        <div class="d-flex flex-column align-items-center">
+            <h1 style="color: rgba(249, 220, 72, 255);">{{result}}</h1>
+            <p>Your content contains some hateful speech. We recognized your language as offensive.</p>
         </div>
     </div>
     {% endif %}
