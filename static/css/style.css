@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(240, 236, 248);
+    background-color: rgb(243, 243, 243);
 }
 
 .banner-image{
@@ -38,5 +38,11 @@ body{
     background-color: rgba(25, 21, 74, 255);
     width: 60vw;
     border-radius: 10px;
-    transform: skewX(-10deg);
+    /* transform: skewX(-10deg); */
+}
+.backbutton{
+    background-color: rgba(25, 21, 74, 255);
+    color: white;
+    font-weight: 600;
+    box-shadow: 3px 4px 10px rgb(126, 124, 138);
 }
