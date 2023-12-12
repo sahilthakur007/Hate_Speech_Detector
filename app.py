@@ -104,33 +104,20 @@ def get_text():
     if request.method == "POST":
         text = request.form.get("text")
         processesText = strip_sent([text])[0]
-        print("out")
-        if __name__ == '__main__':
-            print("Hi")
-            loaded_model = ClassificationModel('bert', './models/content/outputs', num_labels=2,use_cuda=False, args={'fp16': False})
-            predictions, raw_outputs = loaded_model.predict([
-            [processesText],
-            ])
-            print("bye")
+        loaded_model = ClassificationModel('bert', './models/content/outputs', num_labels=2,use_cuda=False, args={'fp16': False})
+        predictions, raw_outputs = loaded_model.predict([
+        [processesText],
+        ])
 
-            # print(output)
-
-        # Map prediction index to labels
-            # label_mapping = {0: 'HOF', 1: 'NOT'}
-            # predicted_label = predictions[0]
-            result = ""
-            # if predicted_label=='NOT':
-            #     result = "No Hate"
-            # else:
-            #     result = "Hate"
-            return render_template('text_detector.html',result=result,text=text)
-
-    #    model = fasttext.load_model('./models/fasttext.bin')
-    #    hatedetecter=pickle.load(open('./models/hate_detector.pkl','rb'))
-    #    output = hatedetecter.predict([model.get_sentence_vector
-    #    (processedText)])[0]
-    #    print(output)
-    #    print(text)
+    # Map prediction index to labels
+        label_mapping = {0: 'HOF', 1: 'NOT'}
+        predicted_label = predictions[0]
+        result = ""
+        if predicted_label=='NOT':
+            result = "No Hate"
+        else:
+            result = "Hate"
+        return render_template('result.html',result=result,text=text)
       
 
     return render_template('text_detector.html')
@@ -148,24 +135,23 @@ def get_audio():
            audio.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(audio.filename))) # 
            
            text = startConvertion("./static/"+audio.filename)
-         
-           
-    #    audio.export("output.mp3", format="mp3")
-    #    print(audio)
-           processedText  = preprocessing(text)
+           print(text)
+           processesText = strip_sent([text])[0]
+           loaded_model = ClassificationModel('bert', './models/content/outputs', num_labels=2,use_cuda=False, args={'fp16': False})
 
-           model = fasttext.load_model('./models/fasttext.bin')
-           hatedetecter=pickle.load(open('./models/hate_detector.pkl','rb'))
-           output = hatedetecter.predict([model.get_sentence_vector
-           (processedText)])[0]
-    #    print(output)
-    #    print(text)
+    #  loaded_model = ClassificationModel('bert', './models/content/outputs', num_labels=2,use_cuda=False, args={'fp16': False})
+           predictions, raw_outputs = loaded_model.predict([
+           [processesText],])
+
+    # Map prediction index to labels
+           label_mapping = {0: 'HOF', 1: 'NOT'}
+           predicted_label = predictions[0]
            result = ""
-           if output==1:
-                result = "No Hate"
+           if predicted_label=='NOT':
+             result = "No Hate"
            else:
-                result = "Hate"
-           return render_template('audio_detector.html',result=result)
+             result = "Hate"
+           return render_template('result.html',result=result,text=text)
 
     return render_template('audio_detector.html')
 if __name__ == '__main__':

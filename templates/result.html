@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<body>
+    <h1>{{text}}</h1>
+    
+    {% if result == "No Hate": %}
+    <div class="container result-div mt-5 text-white">
+        <h4>Detected Result</h4>
+        <div class="d-flex flex-column align-items-center">
+            <h1 style="color: rgba(249, 220, 72, 255);">{{result}}</h1>
+            <p>Your content does not contain any hateful speech. We recognized your language as non offensive.</p>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if result == "Hate": %}
+    <div class="container result-div mt-5 text-white">
+        <h4>Detected Result</h4>
+        <div class="d-flex flex-column align-items-center">
+            <h1 style="color: rgba(249, 220, 72, 255);">{{result}}</h1>
+            <p>Your content contains some hateful speech. We recognized your language as offensive.</p>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>
