@@ -103,8 +103,10 @@ def getAudioDetector():
 def get_text():
     if request.method == "POST":
         text = request.form.get("text")
-        processesText = strip_sent([text])[0]
+        processesText = preprocessing(text)
+        print(processesText)
         loaded_model = ClassificationModel('bert', './models/content/outputs', num_labels=2,use_cuda=False, args={'fp16': False})
+        
         predictions, raw_outputs = loaded_model.predict([
         [processesText],
         ])
@@ -136,7 +138,8 @@ def get_audio():
            
            text = startConvertion("./static/"+audio.filename)
            print(text)
-           processesText = strip_sent([text])[0]
+           processesText = preprocessing(text)
+           print(processesText)
            loaded_model = ClassificationModel('bert', './models/content/outputs', num_labels=2,use_cuda=False, args={'fp16': False})
 
     #  loaded_model = ClassificationModel('bert', './models/content/outputs', num_labels=2,use_cuda=False, args={'fp16': False})
